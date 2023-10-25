@@ -18,7 +18,9 @@ public class Reservations {
     @ManyToOne
     @JoinColumn(name = "parking_id")
     private Parking parking;
-    private Long clientId;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
@@ -27,9 +29,9 @@ public class Reservations {
         // Default constructor
     }
 
-    public Reservations(Parking parking, Long clientId, LocalDateTime endTime) {
+    public Reservations(Parking parking, Client client, LocalDateTime endTime) {
         this.parking = parking;
-        this.clientId = clientId;
+        this.client = client;
         this.endTime = endTime;
     }
 
@@ -38,7 +40,7 @@ public class Reservations {
         return "Reservation{" +
                 "id=" + id +
                 ", parking=" + parking +
-                ", clientId=" + clientId +
+                ", client=" + client +
                 ", endDate=" + endTime +
                 '}';
     }

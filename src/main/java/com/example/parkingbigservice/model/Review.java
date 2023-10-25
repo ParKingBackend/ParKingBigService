@@ -19,7 +19,9 @@ public class Review {
     private double rating;
     @Column(name = "posted_time")
     private LocalDateTime postedTime;
-    private Long clientId;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
     @ManyToOne
     @JoinColumn(name = "parking_id")
     private Parking parking;
@@ -29,13 +31,12 @@ public class Review {
     public Review() {
         // Default constructor
     }
-    public Review(String title, String description, double rating, Long clientId, Parking parking) {
+    public Review(String title, String description, double rating, Client client, Parking parking) {
         this.title = title;
         this.description = description;
         this.rating = rating;
-        this.clientId = clientId;
+        this.client = client;
         this.parking = parking;
-        this.postedTime = LocalDateTime.now(); // Set the posted time to the current local time
     }
 
     @Override

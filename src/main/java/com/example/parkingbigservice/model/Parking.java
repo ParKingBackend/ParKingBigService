@@ -18,19 +18,19 @@ public class Parking {
     private String address;
     private BigDecimal price;
     @Column(name = "is_Premium", columnDefinition = "TINYINT(1)") // Specify TINYINT(1)
-    private boolean isPremium;
+    private Boolean isPremium;
     private Long partnerId;
-    private int maxSpotsCount;
-    private int spotsTaken;
+    private Integer maxSpotsCount;
+    private Integer spotsTaken;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     @Column(name = "is_Disabled", columnDefinition = "TINYINT(1)") // Specify TINYINT(1)
-    private boolean isDisabled;
+    private Boolean isDisabled;
 
     public Parking() {
     }
 
-    public Parking(String address, BigDecimal price, boolean isPremium, Long partnerId, int maxSpotsCount, int spotsTaken, LocalDateTime startTime, LocalDateTime endTime, boolean isDisabled) {
+    public Parking(String address, BigDecimal price, Boolean isPremium, Long partnerId, Integer maxSpotsCount, Integer spotsTaken, LocalDateTime startTime, LocalDateTime endTime, Boolean isDisabled) {
         this.address = address;
         this.price = price;
         this.isPremium = isPremium;
@@ -40,7 +40,9 @@ public class Parking {
         this.startTime = startTime;
         this.endTime = endTime;
         this.isDisabled = isDisabled;
+
     }
+
 
     public void setIsDisabled(boolean isDisabled) {
         this.isDisabled = isDisabled;
@@ -50,6 +52,15 @@ public class Parking {
     public boolean getIsPremium() {
         return isPremium;
     }
+
+    public boolean getIsDisabled() {
+        return isDisabled;
+    }
+
+    public void setIsPremium(boolean isPremium) {
+        this.isPremium = isPremium;
+    }
+
     @Override
     public String toString() {
         return "Parking{" +
@@ -64,4 +75,6 @@ public class Parking {
                 ", isDisabled=" + isDisabled +
                 '}';
     }
+
+
 }

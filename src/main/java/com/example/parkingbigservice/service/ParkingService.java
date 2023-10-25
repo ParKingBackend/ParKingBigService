@@ -39,30 +39,7 @@ public class ParkingService {
             return false;
         }
     }
-    public Optional<Parking> updateParking(Long id, Parking updatedParking) {
-        Optional<Parking> existingParking = parkingRepository.findById(id);
-        if (existingParking.isPresent()) {
-            Parking parking = existingParking.get();
-
-            if (updatedParking.getAddress() != null) {
-                parking.setAddress(updatedParking.getAddress());
-            }
-            if (updatedParking.getPrice() != null) {
-                parking.setPrice(updatedParking.getPrice());
-            }
-            if (updatedParking.getPartnerId() != null) {
-                parking.setPartnerId(updatedParking.getPartnerId());
-            }
-
-            if (updatedParking.getStartTime() != null) {
-                parking.setStartTime(updatedParking.getStartTime());
-            }
-            if (updatedParking.getEndTime() != null) {
-                parking.setEndTime(updatedParking.getEndTime());
-            }
-            // PIETRŪKST ISPREMIUM/ISDISABLED/MAXSPOTS/TAKENSPOTS!!!!!!!!!!!!!!!
-            return Optional.of(parkingRepository.save(parking));
-        }
-        return Optional.empty();
+    public void updateParking(Parking parking) {
+        parkingRepository.save(parking);
     }
 }
