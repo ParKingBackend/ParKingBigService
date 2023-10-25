@@ -96,7 +96,7 @@ public class ClientController {
         return clientService.getAllClients();
     }
 
-    @PostMapping("/{clientId}/add-bank-account")
+    @PutMapping("/{clientId}/update-bank-account")
     public ResponseEntity<String> addBankAccountToClient(
             @PathVariable Long clientId,
             @RequestBody Map<String, String> requestBody) {
@@ -105,7 +105,7 @@ public class ClientController {
         return ResponseEntity.ok("Bank account added successfully.");
     }
 
-    @PostMapping("/{clientId}/add-image")
+    @PutMapping("/{clientId}/update-image")
     public ResponseEntity<String> addImageToClient(
             @PathVariable Long clientId,
             @RequestBody Map<String, String> requestBody) {
@@ -114,5 +114,31 @@ public class ClientController {
         return ResponseEntity.ok("Image added successfully.");
     }
 
+    @PutMapping("/{clientId}/update-xp")
+    public ResponseEntity<String> updateXp(
+            @PathVariable Long clientId,
+            @RequestBody Map<String, Integer> requestBody) {
+        int xp = requestBody.get("xp");
+        clientService.updateXp(clientId, xp);
+        return ResponseEntity.ok("XP updated successfully.");
+    }
+
+    @PutMapping("/{clientId}/update-level")
+    public ResponseEntity<String> updateLevel(
+            @PathVariable Long clientId,
+            @RequestBody Map<String, Integer> requestBody) {
+        int level = requestBody.get("level");
+        clientService.updateLevel(clientId, level);
+        return ResponseEntity.ok("Level updated successfully.");
+    }
+
+    @PutMapping("/{clientId}/update-username")
+    public ResponseEntity<String> updateUsername(
+            @PathVariable Long clientId,
+            @RequestBody Map<String, String> requestBody) {
+        String username = requestBody.get("username");
+        clientService.updateUsername(clientId, username);
+        return ResponseEntity.ok("Username updated successfully.");
+    }
 
 }

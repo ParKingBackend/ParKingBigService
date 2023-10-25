@@ -1,5 +1,6 @@
 package com.example.parkingbigservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,9 +17,10 @@ public class PremiumSubscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Primary key generated automatically
     private LocalDate endDate;
-    private BigDecimal discountAmount;
+    private Double discountAmount;
     @OneToOne
     @JoinColumn(name = "client_id")
+    @JsonIgnore
     private Client client;
 
     // Constructors, getters, and setters
@@ -27,7 +29,7 @@ public class PremiumSubscription {
         // Default constructor
     }
 
-    public PremiumSubscription(LocalDate endDate, BigDecimal discountAmount) {
+    public PremiumSubscription(LocalDate endDate, Double discountAmount) {
         this.endDate = endDate;
         this.discountAmount = discountAmount;
     }
@@ -38,7 +40,7 @@ public class PremiumSubscription {
         this.endDate = endDate;
     }
 
-    public void setDiscountAmount(BigDecimal discountAmount) {
+    public void setDiscountAmount(Double discountAmount) {
         this.discountAmount = discountAmount;
     }
 

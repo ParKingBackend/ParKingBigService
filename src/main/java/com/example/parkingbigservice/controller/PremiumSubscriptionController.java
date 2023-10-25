@@ -77,9 +77,24 @@ public class PremiumSubscriptionController {
         }
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Object> getPremiumSubscriptionById(@PathVariable Long id) {
+        Optional<PremiumSubscription> optionalPremiumSubscription = premiumSubscriptionService.getPremiumSubscriptionById(id);
+
+        if (optionalPremiumSubscription.isPresent()) {
+            PremiumSubscription premiumSubscription = optionalPremiumSubscription.get();
+            return ResponseEntity.ok(premiumSubscription);
+        } else {
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "Subscription with ID " + id + " not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
     @GetMapping("/get/all")
     public List<PremiumSubscription> getAllPremiumSubscriptions() {
         return premiumSubscriptionService.getAllSubscriptions();
     }
+
 
 }
