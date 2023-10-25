@@ -40,7 +40,7 @@ public class ReviewController {
         }
 
         if (request.getClientId() == null) {
-            return ResponseEntity.badRequest().body("Rating, comment, and client_id are required in the request.");
+            return ResponseEntity.badRequest().body("Rating, description, and client_id are required in the request.");
         }
 
         Optional<Client> optionalClient = Optional.ofNullable(clientService.findById(request.getClientId()));
