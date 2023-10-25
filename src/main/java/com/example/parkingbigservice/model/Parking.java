@@ -44,36 +44,17 @@ public class Parking {
     }
 
 
-    public void setIsDisabled(boolean isDisabled) {
+    public void setIsDisabled(Boolean isDisabled) {
         this.isDisabled = isDisabled;
     }
 
-
-    public boolean getIsPremium() {
-        return isPremium;
-    }
-
-    public boolean getIsDisabled() {
-        return isDisabled;
-    }
-
-    public void setIsPremium(boolean isPremium) {
+    public void setIsPremium(Boolean isPremium) {
         this.isPremium = isPremium;
     }
 
     @Override
     public String toString() {
-        return "Parking{" +
-                "address='" + address + '\'' +
-                ", price=" + price +
-                ", isPremium=" + isPremium +
-                ", partnerId=" + partnerId +
-                ", maxSpotsCount=" + maxSpotsCount +
-                ", spotsTaken=" + spotsTaken +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", isDisabled=" + isDisabled +
-                '}';
+        return "Parking{" + "address='" + address + '\'' + ", price=" + price + ", isPremium=" + isPremium + ", partnerId=" + partnerId + ", maxSpotsCount=" + maxSpotsCount + ", spotsTaken=" + spotsTaken + ", startTime=" + startTime + ", endTime=" + endTime + ", isDisabled=" + isDisabled + '}';
     }
 
 

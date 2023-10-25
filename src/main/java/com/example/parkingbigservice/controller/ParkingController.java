@@ -3,14 +3,10 @@ package com.example.parkingbigservice.controller;
 import com.example.parkingbigservice.model.Parking;
 import com.example.parkingbigservice.service.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController
@@ -69,27 +65,36 @@ public class ParkingController {
     public ResponseEntity<Parking> updateParking(@PathVariable Long id, @RequestBody Parking updatedParking) {
         try {
             Parking parking = parkingService.findById(id);
-            parking.setAddress(updatedParking.getAddress());
-            parking.setPrice(updatedParking.getPrice());
-            parking.setIsPremium(updatedParking.getIsPremium());
-            parking.setPartnerId(updatedParking.getPartnerId());
-            parking.setMaxSpotsCount(updatedParking.getMaxSpotsCount());
-            parking.setSpotsTaken(updatedParking.getSpotsTaken());
-            parking.setStartTime(updatedParking.getStartTime());
-            parking.setEndTime(updatedParking.getEndTime());
-            parking.setIsPremium(updatedParking.getIsPremium());
-            parking.setIsDisabled(updatedParking.getIsDisabled());
-
+            if (updatedParking.getAddress() != null) {
+                parking.setAddress(updatedParking.getAddress());
+            }
+            if (updatedParking.getPrice() != null) {
+                parking.setPrice(updatedParking.getPrice());
+            }
+            if (updatedParking.getPartnerId() != null) {
+                parking.setPartnerId(updatedParking.getPartnerId());
+            }
+            if (updatedParking.getMaxSpotsCount() != null) {
+                parking.setMaxSpotsCount(updatedParking.getMaxSpotsCount());
+            }
+            if (updatedParking.getSpotsTaken() != null) {
+                parking.setSpotsTaken(updatedParking.getSpotsTaken());
+            }
+            if (updatedParking.getStartTime() != null) {
+                parking.setStartTime(updatedParking.getStartTime());
+            }
+            if (updatedParking.getEndTime() != null) {
+                parking.setEndTime(updatedParking.getEndTime());
+            }
+            if (updatedParking.getIsPremium() != null) {
+                parking.setIsPremium(updatedParking.getIsPremium());
+            }
+            if (updatedParking.getIsDisabled() != null) {
+                parking.setIsDisabled(updatedParking.getIsDisabled());
+            }
             parkingService.updateParking(parking);
-
-            // Log the successful update
-            logger.info("Updated Parking with ID: " + id);
-
             return ResponseEntity.ok(parking);
         } catch (Exception e) {
-            // Log any exceptions that occur during the update
-            logger.severe("Error updating Parking with ID: " + id);
-            e.printStackTrace();
             return ResponseEntity.badRequest().body(null);
         }
     }
