@@ -25,7 +25,7 @@ public class ReportController {
         this.reportService = reportService;
         this.parkingService = parkingService;
     }
-    @PostMapping("/add/{parkingId}")
+    @PostMapping("/create/{parkingId}")
     public ResponseEntity<Object> createReport(@PathVariable Long parkingId, @RequestBody Report report) {
         Optional<Parking> optionalParking = Optional.ofNullable(parkingService.findById(parkingId));
         if (optionalParking.isPresent()) {

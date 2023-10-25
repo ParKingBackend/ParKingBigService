@@ -29,7 +29,7 @@ public class ReservationsController {
         this.parkingService = parkingService;
         this.clientService = clientService;
     }
-    @PostMapping("/add/{parkingId}")
+    @PostMapping("/create/{parkingId}")
     public ResponseEntity<Object> createReservations(@PathVariable Long parkingId, @RequestBody ReservationCreateRequest request) {
         Optional<Parking> optionalParking = Optional.ofNullable(parkingService.findById(parkingId));
 

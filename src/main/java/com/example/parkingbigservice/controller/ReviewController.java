@@ -31,7 +31,7 @@ public class ReviewController {
         this.parkingService = parkingService;
         this.clientService = clientService;
     }
-    @PostMapping("/add/{parkingId}")
+    @PostMapping("/create/{parkingId}")
     public ResponseEntity<Object> createReview(@PathVariable Long parkingId, @RequestBody ReviewCreateRequest request) {
         Optional<Parking> optionalParking = Optional.ofNullable(parkingService.findById(parkingId));
 

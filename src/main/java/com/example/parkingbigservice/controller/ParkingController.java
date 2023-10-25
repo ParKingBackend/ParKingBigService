@@ -21,7 +21,7 @@ public class ParkingController {
         this.parkingService = parkingService;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/create")
     public Parking createParking(@RequestBody Parking parking) {
         return parkingService.createParking(parking);
     }
