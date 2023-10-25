@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PremiumSubscriptionService {
@@ -43,5 +44,9 @@ public class PremiumSubscriptionService {
             // Person with the specified ID not found, return null or throw an exception
             return null; // You can also throw an exception if you prefer
         }
+    }
+
+    public Optional<PremiumSubscription> getPremiumSubscriptionById(Long id) {
+        return premiumSubscriptionRepository.findById(id);
     }
 }
