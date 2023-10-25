@@ -75,8 +75,17 @@ public class ClientService {
         clientRepository.addImage(clientId, image);
     }
 
-    public void updateClient(Long clientId, String username, String password, String email) {
-        clientRepository.updateClient(clientId, username, password, email);
+
+    public void updateXp(Long clientId, int xp) {
+        clientRepository.updateXp(clientId, xp);
+    }
+
+    public void updateLevel(Long clientId, int level) {
+        clientRepository.updateLevel(clientId, level);
+    }
+
+    public void updateUsername(Long clientId, String username) {
+        clientRepository.updateUsername(clientId, username);
     }
 
 }

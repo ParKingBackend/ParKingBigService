@@ -26,4 +26,20 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Transactional
     @Query("UPDATE Client c SET c.username = :username, c.password = :password, c.email = :email WHERE c.id = :clientId")
     void updateClient(Long clientId, String username, String password, String email);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Client c SET c.xp = :xp WHERE c.id = :clientId")
+    void updateXp(Long clientId, int xp);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Client c SET c.level = :level WHERE c.id = :clientId")
+    void updateLevel(Long clientId, int level);
+
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Client c SET c.username = :username WHERE c.id = :clientId")
+    void updateUsername(Long clientId, String username);
 }
