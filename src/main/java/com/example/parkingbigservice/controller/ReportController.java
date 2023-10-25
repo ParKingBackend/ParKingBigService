@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -52,6 +53,10 @@ public class ReportController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }
+    }
+    @GetMapping("/get/all")
+    public List<Report> getAllClients() {
+        return reportService.getAllClients();
     }
 
 }

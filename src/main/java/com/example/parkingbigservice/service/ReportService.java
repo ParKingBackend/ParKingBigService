@@ -1,10 +1,12 @@
 package com.example.parkingbigservice.service;
 
+import com.example.parkingbigservice.model.Parking;
 import com.example.parkingbigservice.model.Report;
 import com.example.parkingbigservice.repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @Service
@@ -22,5 +24,8 @@ public class ReportService {
     }
     public Report findById(Long clientId) {
         return reportRepository.findById(clientId).orElse(null);
+    }
+    public List<Report> getAllClients() {
+        return reportRepository.findAll();
     }
 }

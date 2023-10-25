@@ -2,33 +2,29 @@ package com.example.parkingbigservice.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "parking")
 public class Parking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String address;
-    @Getter
     private BigDecimal price;
     @Column(name = "is_Premium", columnDefinition = "TINYINT(1)") // Specify TINYINT(1)
-
     private boolean isPremium;
-    @Getter
     private Long partnerId;
-    @Getter
     private int maxSpotsCount;
-    @Getter
     private int spotsTaken;
-    @Getter
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     @Column(name = "is_Disabled", columnDefinition = "TINYINT(1)") // Specify TINYINT(1)
-
     private boolean isDisabled;
 
     public Parking() {
@@ -55,7 +51,4 @@ public class Parking {
         return isPremium;
     }
 
-    public void setStartTime(LocalDateTime now) {
-
-    }
 }
