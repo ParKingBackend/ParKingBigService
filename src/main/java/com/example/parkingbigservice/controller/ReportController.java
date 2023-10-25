@@ -59,4 +59,19 @@ public class ReportController {
         return reportService.getAllClients();
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteReport(@PathVariable Long id) {
+        try {
+            boolean deleted = reportService.deleteReport(id);
+
+            if (deleted) {
+                return ResponseEntity.ok("Report deleted successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Report not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Report deletion failed");
+        }
+    }
+
 }

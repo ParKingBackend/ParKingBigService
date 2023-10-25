@@ -28,4 +28,12 @@ public class ReportService {
     public List<Report> getAllClients() {
         return reportRepository.findAll();
     }
+    public boolean deleteReport(Long id) {
+        if (reportRepository.existsById(id)) {
+            reportRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

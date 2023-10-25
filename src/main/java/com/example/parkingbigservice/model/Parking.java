@@ -50,5 +50,18 @@ public class Parking {
     public boolean getIsPremium() {
         return isPremium;
     }
-
+    @Override
+    public String toString() {
+        return "Parking{" +
+                "address='" + address + '\'' +
+                ", price=" + price +
+                ", isPremium=" + isPremium +
+                ", partnerId=" + partnerId +
+                ", maxSpotsCount=" + maxSpotsCount +
+                ", spotsTaken=" + spotsTaken +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", isDisabled=" + isDisabled +
+                '}';
+    }
 }

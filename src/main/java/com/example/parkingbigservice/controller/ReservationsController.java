@@ -1,6 +1,7 @@
 package com.example.parkingbigservice.controller;
 
 import com.example.parkingbigservice.model.Parking;
+import com.example.parkingbigservice.model.Report;
 import com.example.parkingbigservice.model.Reservations;
 import com.example.parkingbigservice.service.ParkingService;
 import com.example.parkingbigservice.service.ReservationsService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -54,4 +56,22 @@ public class ReservationsController {
         }
     }
 
+    @GetMapping("/get/all")
+    public List<Reservations> getAllClients() {
+        return reservationsService.getAllClients();
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteReservations(@PathVariable Long id) {
+        try {
+            boolean deleted = reservationsService.deleteReservations(id);
+
+            if (deleted) {
+                return ResponseEntity.ok("Reservation deleted successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Reservation not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Reservation deletion failed");
+        }
+    }
 }

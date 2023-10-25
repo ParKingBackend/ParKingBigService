@@ -2,6 +2,7 @@ package com.example.parkingbigservice.controller;
 
 
 import com.example.parkingbigservice.model.Parking;
+import com.example.parkingbigservice.model.Reservations;
 import com.example.parkingbigservice.model.Review;
 import com.example.parkingbigservice.service.ParkingService;
 import com.example.parkingbigservice.service.ReviewService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -55,5 +57,22 @@ public class ReviewController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+    @GetMapping("/get/all")
+    public List<Review> getAllClients() {
+        return reviewService.getAllClients();
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteReview(@PathVariable Long id) {
+        try {
+            boolean deleted = reviewService.deleteReview(id);
 
+            if (deleted) {
+                return ResponseEntity.ok("Review deleted successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Review not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Review deletion failed");
+        }
+    }
 }
