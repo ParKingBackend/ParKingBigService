@@ -32,31 +32,29 @@ public class ReservationsController {
     @PostMapping("/add/{parkingId}")
     public ResponseEntity<Object> createReservations(@PathVariable Long parkingId, @RequestBody ReservationCreateRequest request) {
         Optional<Parking> optionalParking = Optional.ofNullable(parkingService.findById(parkingId));
-        if (optionalParking.isPresent()) {
-            Parking parking = optionalParking.get();
-            if (request.getClientId() != null) {
-                Optional<Client> optionalClient = Optional.ofNullable(clientService.findById(request.getClientId()));
-                if (optionalClient.isPresent()) {
-                    Client client = optionalClient.get();
-                    Reservations reservations = new Reservations(parking, client, request.getEndTime());
-                    Reservations createdReservations = reservationsService.createReservations(reservations);
-                    return ResponseEntity.ok(createdReservations);
-                } else {
-                    Map<String, String> response = new HashMap<>();
-                    response.put("error", "Client with id " + request.getClientId() + " not found.");
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-                }
-            } else {
-                // Handle the case where client_id is not provided in the request
-                Map<String, String> response = new HashMap<>();
-                response.put("error", "clientId is required in the request.");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-            }
-        } else {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", "Parking with id " + parkingId + " not found.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
+        if (optionalParking.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+
+        Long clientId = request.getClientId();
+        if (clientId == null) {
+            return ResponseEntity.badRequest().body("clientId is required in the request.");
+        }
+
+        Optional<Client> optionalClient = Optional.ofNullable(clientService.findById(clientId));
+        if (optionalClient.isEmpty()) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Client with id " + request.getClientId() + " not found.");
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+
+        Parking parking = optionalParking.get();
+        Client client = optionalClient.get();
+        Reservations reservations = new Reservations(parking, client, request.getEndTime());
+        Reservations createdReservations = reservationsService.createReservations(reservations);
+
+        return ResponseEntity.ok(createdReservations);
     }
 
     @GetMapping("/get/{id}")

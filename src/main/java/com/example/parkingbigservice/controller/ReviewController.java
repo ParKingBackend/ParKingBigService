@@ -3,7 +3,6 @@ package com.example.parkingbigservice.controller;
 
 import com.example.parkingbigservice.model.Client;
 import com.example.parkingbigservice.model.Parking;
-import com.example.parkingbigservice.model.Reservations;
 import com.example.parkingbigservice.model.Review;
 import com.example.parkingbigservice.service.ClientService;
 import com.example.parkingbigservice.service.ParkingService;
@@ -35,32 +34,29 @@ public class ReviewController {
     @PostMapping("/add/{parkingId}")
     public ResponseEntity<Object> createReview(@PathVariable Long parkingId, @RequestBody ReviewCreateRequest request) {
         Optional<Parking> optionalParking = Optional.ofNullable(parkingService.findById(parkingId));
-        if (optionalParking.isPresent()) {
-            Parking parking = optionalParking.get();
-            if (request.getClientId() != null) {
-                Optional<Client> optionalClient = Optional.ofNullable(clientService.findById(request.getClientId()));
-                if (optionalClient.isPresent()) {
-                    Client client = optionalClient.get();
-                    Review review = new Review(request.getTitle(), request.getDescription(), request.getRating(), client, parking);
-                    review.setPostedTime(LocalDateTime.now());
-                    Review createdReview = reviewService.createReview(review);
-                    return ResponseEntity.ok(createdReview);
-                } else {
-                    Map<String, String> response = new HashMap<>();
-                    response.put("error", "Client with id " + request.getClientId() + " not found.");
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-                }
-            } else {
-                // Handle the case where required data is missing
-                Map<String, String> response = new HashMap<>();
-                response.put("error", "Rating, comment, and client_id are required in the request.");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-            }
-        } else {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", "Parking with id " + parkingId + " not found.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
+        if (optionalParking.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+
+        if (request.getClientId() == null) {
+            return ResponseEntity.badRequest().body("Rating, comment, and client_id are required in the request.");
+        }
+
+        Optional<Client> optionalClient = Optional.ofNullable(clientService.findById(request.getClientId()));
+
+        if (optionalClient.isEmpty()) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Client with id " + request.getClientId() + " not found.");
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+
+        Parking parking = optionalParking.get();
+        Client client = optionalClient.get();
+        Review review = new Review(request.getTitle(), request.getDescription(), request.getRating(), client, parking);
+        review.setPostedTime(LocalDateTime.now());
+        Review createdReview = reviewService.createReview(review);
+        return ResponseEntity.ok(createdReview);
     }
 
     @GetMapping("/get/{id}")

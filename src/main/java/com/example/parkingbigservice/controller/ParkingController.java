@@ -49,6 +49,7 @@ public class ParkingController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteParking(@PathVariable Long id) {
         try {
+            //Izdzest rezervaciju un reviews un reports!
             boolean deleted = parkingService.deleteParking(id);
 
             if (deleted) {
@@ -79,12 +80,6 @@ public class ParkingController {
             }
             if (updatedParking.getSpotsTaken() != null) {
                 parking.setSpotsTaken(updatedParking.getSpotsTaken());
-            }
-            if (updatedParking.getStartTime() != null) {
-                parking.setStartTime(updatedParking.getStartTime());
-            }
-            if (updatedParking.getEndTime() != null) {
-                parking.setEndTime(updatedParking.getEndTime());
             }
             if (updatedParking.getIsPremium() != null) {
                 parking.setIsPremium(updatedParking.getIsPremium());

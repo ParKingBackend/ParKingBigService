@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -22,23 +21,19 @@ public class Parking {
     private Long partnerId;
     private Integer maxSpotsCount;
     private Integer spotsTaken;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
     @Column(name = "is_Disabled", columnDefinition = "TINYINT(1)") // Specify TINYINT(1)
     private Boolean isDisabled;
 
     public Parking() {
     }
 
-    public Parking(String address, BigDecimal price, Boolean isPremium, Long partnerId, Integer maxSpotsCount, Integer spotsTaken, LocalDateTime startTime, LocalDateTime endTime, Boolean isDisabled) {
+    public Parking(String address, BigDecimal price, Boolean isPremium, Long partnerId, Integer maxSpotsCount, Integer spotsTaken, Boolean isDisabled) {
         this.address = address;
         this.price = price;
         this.isPremium = isPremium;
         this.partnerId = partnerId;
         this.maxSpotsCount = maxSpotsCount;
         this.spotsTaken = spotsTaken;
-        this.startTime = startTime;
-        this.endTime = endTime;
         this.isDisabled = isDisabled;
 
     }
@@ -54,7 +49,7 @@ public class Parking {
 
     @Override
     public String toString() {
-        return "Parking{" + "address='" + address + '\'' + ", price=" + price + ", isPremium=" + isPremium + ", partnerId=" + partnerId + ", maxSpotsCount=" + maxSpotsCount + ", spotsTaken=" + spotsTaken + ", startTime=" + startTime + ", endTime=" + endTime + ", isDisabled=" + isDisabled + '}';
+        return "Parking{" + "address='" + address + '\'' + ", price=" + price + ", isPremium=" + isPremium + ", partnerId=" + partnerId + ", maxSpotsCount=" + maxSpotsCount + ", spotsTaken=" + spotsTaken + ", isDisabled=" + isDisabled + '}';
     }
 
 

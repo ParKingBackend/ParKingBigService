@@ -20,9 +20,6 @@ public class ParkingService {
     }
 
     public Parking createParking(Parking parking) {
-        if (parking.getStartTime() == null) {
-            parking.setStartTime(LocalDateTime.now());
-        }
         return parkingRepository.save(parking);
     }
 
