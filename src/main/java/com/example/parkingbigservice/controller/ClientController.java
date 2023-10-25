@@ -114,5 +114,18 @@ public class ClientController {
         return ResponseEntity.ok("Image added successfully.");
     }
 
+    @PutMapping("/{clientId}/update")
+    public ResponseEntity<String> updateClient(
+            @PathVariable Long clientId,
+            @RequestBody Map<String, String> requestBody) {
+        String username = requestBody.get("username");
+        String password = requestBody.get("password");
+        String email = requestBody.get("email");
+        clientService.updateClient(clientId, username, password, email);
+        return ResponseEntity.ok("Client updated successfully.");
+    }
+
+
+
 
 }

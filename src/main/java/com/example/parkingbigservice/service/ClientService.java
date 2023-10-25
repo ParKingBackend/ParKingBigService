@@ -74,4 +74,9 @@ public class ClientService {
     public void addImage(Long clientId, String image) {
         clientRepository.addImage(clientId, image);
     }
+
+    public void updateClient(Long clientId, String username, String password, String email) {
+        clientRepository.updateClient(clientId, username, password, email);
+    }
+
 }
