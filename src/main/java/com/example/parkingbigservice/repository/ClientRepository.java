@@ -42,4 +42,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Transactional
     @Query("UPDATE Client c SET c.username = :username WHERE c.id = :clientId")
     void updateUsername(Long clientId, String username);
+
+    Client findByEmail(String email);
 }

@@ -31,6 +31,9 @@ public class ClientController {
             if (clientService.findByUsername(username) != null) {
                 return ResponseEntity.badRequest().body("Username is already taken");
             }
+            if (clientService.findByEmail(email) != null) {
+                return ResponseEntity.badRequest().body("Email is already taken");
+            }
 
             clientService.registerClient(username, password, email);
 
@@ -41,9 +44,9 @@ public class ClientController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<String> login(@RequestParam String Email, @RequestParam String password) {
         try {
-            Client client = clientService.findByUsername(username);
+            Client client = clientService.findByEmail(Email);
 
             if (client == null) {
                 return ResponseEntity.badRequest().body("Client not found");

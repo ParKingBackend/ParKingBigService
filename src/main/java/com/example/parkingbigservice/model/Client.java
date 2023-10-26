@@ -26,7 +26,6 @@ public class Client {
 
 
     public Client() {
-
     }
 
     public Client(String username, String password, String email) {
