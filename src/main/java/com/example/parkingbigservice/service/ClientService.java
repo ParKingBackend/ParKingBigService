@@ -24,7 +24,7 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-    public void registerClient(String username, String password, String email) {
+    public void registerClient(String username, String password, String email, String image) {
         // Hash the password using BCrypt
         String hashedPassword = passwordEncoder.encode(password);
 
@@ -33,6 +33,7 @@ public class ClientService {
         client.setUsername(username);
         client.setPassword(hashedPassword);
         client.setEmail(email);
+        client.setImage(image);
 
         // Save the client in the database
         clientRepository.save(client);

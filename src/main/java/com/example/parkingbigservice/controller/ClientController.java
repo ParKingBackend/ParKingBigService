@@ -26,6 +26,7 @@ public class ClientController {
             String username = registrationRequest.getUsername();
             String password = registrationRequest.getPassword();
             String email = registrationRequest.getEmail();
+            String image = registrationRequest.getImage();
 
             // Check if the username is already taken
             if (clientService.findByUsername(username) != null) {
@@ -34,8 +35,11 @@ public class ClientController {
             if (clientService.findByEmail(email) != null) {
                 return ResponseEntity.badRequest().body("Email is already taken");
             }
+            if(image == null){
+                image = "http://rhomeserver.ddns.net/adminpanel/admin/images/pfp.jpg";
+            }
 
-            clientService.registerClient(username, password, email);
+            clientService.registerClient(username, password, email, image);
 
             return ResponseEntity.ok("Client registration successful");
         } catch (Exception e) {
