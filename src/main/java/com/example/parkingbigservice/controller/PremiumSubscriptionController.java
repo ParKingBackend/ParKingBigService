@@ -102,23 +102,25 @@ public class PremiumSubscriptionController {
     }
 
     @GetMapping("/get/all")
-    public List<PremiumSubscriptionDTO> getAllPremiumSubscriptionsWithClientIDs() {
+    public List<PremiumSubscriptionDTO> getAllPremiumSubscriptionsWithClients() {
         List<PremiumSubscription> premiumSubscriptions = premiumSubscriptionService.getAllSubscriptions();
-        List<PremiumSubscriptionDTO> premiumSubscriptionsWithClientIDs = new ArrayList<>();
+        List<PremiumSubscriptionDTO> premiumSubscriptionsWithClients = new ArrayList<>();
 
         for (PremiumSubscription subscription : premiumSubscriptions) {
             PremiumSubscriptionDTO subscriptionDTO = new PremiumSubscriptionDTO(
                     subscription.getId(),
                     subscription.getEndDate(),
                     subscription.getDiscountAmount(),
-                    subscription.getClient().getId() // Include the client's ID
+                    subscription.getClient() // Include the full Client object
             );
 
-            premiumSubscriptionsWithClientIDs.add(subscriptionDTO);
+            premiumSubscriptionsWithClients.add(subscriptionDTO);
         }
 
-        return premiumSubscriptionsWithClientIDs;
+        return premiumSubscriptionsWithClients;
     }
+
+
     @Transactional
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deletePremiumSubscription(@PathVariable Long id) {
