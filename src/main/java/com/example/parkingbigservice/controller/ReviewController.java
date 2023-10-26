@@ -100,7 +100,7 @@ public class ReviewController {
                 review.setTitle(updatedReview.getTitle());
             }
             if(updatedReview.getDescription() != null) {
-                review.setTitle(updatedReview.getDescription());
+                review.setDescription(updatedReview.getDescription());
             }
             if(updatedReview.getRating() != null) {
                 review.setRating(updatedReview.getRating());
