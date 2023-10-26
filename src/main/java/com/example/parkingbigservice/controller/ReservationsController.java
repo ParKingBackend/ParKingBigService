@@ -44,6 +44,7 @@ public class ReservationsController {
         }
 
         Optional<Client> optionalClient = Optional.ofNullable(clientService.findById(clientId));
+
         if (optionalClient.isEmpty()) {
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", "Client with id " + request.getClientId() + " not found.");
@@ -52,6 +53,7 @@ public class ReservationsController {
 
         Parking parking = optionalParking.get();
         Client client = optionalClient.get();
+
         Reservations reservations = new Reservations(parking, client, request.getEndTime());
         Reservations createdReservations = reservationsService.createReservations(reservations);
 

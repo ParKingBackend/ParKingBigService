@@ -18,7 +18,6 @@ public class Report {
     private String description;
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonIgnore
     private Client client;
 
 
@@ -36,7 +35,7 @@ public class Report {
     public String toString() {
         return "Report{" +
                 "id=" + id +
-                ", description='" + description + '\'' +
+                ", description='" + description +
                 ", clientId=" + client +
                 '}';
     }

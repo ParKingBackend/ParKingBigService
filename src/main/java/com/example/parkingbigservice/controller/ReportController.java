@@ -55,7 +55,7 @@ public class ReportController {
         Parking parking = optionalParking.get();
         Client client = optionalClient.get();
 
-        Report report = new Report( request.getDescription(), client, parking);
+        Report report = new Report(request.getDescription(), client, parking);
         Report createdReport = reportService.createReport(report);
 
         return ResponseEntity.ok(createdReport);
