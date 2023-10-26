@@ -19,7 +19,27 @@ public class ClientController {
     private ClientService clientService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    @PostMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@RequestParam String Email, @RequestParam String currentPassword, @RequestParam String newPassword) {
+        try {
+            Client client = clientService.findByEmail(Email);
+            if (client == null) {
+                return ResponseEntity.badRequest().body("Client not found");
+            }
+            String hashedPasswordFromDatabase = client.getPassword();
 
+            if (passwordEncoder.matches(currentPassword, hashedPasswordFromDatabase)) {
+                String hashedNewPassword = passwordEncoder.encode(newPassword);
+                client.setPassword(hashedNewPassword);
+                clientService.updateClient(client);
+                return ResponseEntity.ok("Password updated successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Password update failed: Incorrect current password");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Password update failed");
+        }
+    }
     @PostMapping("/register")
     public ResponseEntity<String> registerClient(@RequestBody ClientRegistrationRequest registrationRequest) {
         try {
