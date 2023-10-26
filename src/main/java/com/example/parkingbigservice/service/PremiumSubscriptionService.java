@@ -28,24 +28,26 @@ public class PremiumSubscriptionService {
         return premiumSubscriptionRepository.save(premiumSubscription);
     }
 
-    public PremiumSubscription updatePremiumSubscription(Long id, PremiumSubscription updatedPremiumSubscription) {
-        // Find the existing person by ID
-        PremiumSubscription existingPremiumSubscription = premiumSubscriptionRepository.findById(id).orElse(null);
+    public Optional<PremiumSubscription> getPremiumSubscriptionById(Long id) {
+        return premiumSubscriptionRepository.findById(id);
+    }
 
-        if (existingPremiumSubscription != null) {
-            // Update the fields of the existing person with the values from the updatedPerson
-            existingPremiumSubscription.setEndDate(updatedPremiumSubscription.getEndDate());
-            existingPremiumSubscription.setDiscountAmount(updatedPremiumSubscription.getDiscountAmount());
+    public boolean deletePremiumSubscription(Long id) {
+        Optional<PremiumSubscription> optionalPremiumSubscription = premiumSubscriptionRepository.findById(id);
 
-            // Save the updated person
-            return premiumSubscriptionRepository.save(existingPremiumSubscription);
+        if (optionalPremiumSubscription.isPresent()) {
+            premiumSubscriptionRepository.deleteById(id);
+            return true;
         } else {
-            // Person with the specified ID not found, return null or throw an exception
-            return null; // You can also throw an exception if you prefer
+            return false;
         }
     }
 
-    public Optional<PremiumSubscription> getPremiumSubscriptionById(Long id) {
-        return premiumSubscriptionRepository.findById(id);
+    public PremiumSubscription findById(Long id) {
+        return premiumSubscriptionRepository.findById(id).orElse(null);
+    }
+
+    public void updatePremiumSubscription(PremiumSubscription subscription) {
+        premiumSubscriptionRepository.save(subscription);
     }
 }

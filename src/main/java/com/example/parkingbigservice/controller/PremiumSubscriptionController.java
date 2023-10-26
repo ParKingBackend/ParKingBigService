@@ -62,16 +62,25 @@ public class PremiumSubscriptionController {
 
 
     //make a edit subscription method
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Object> updatePremiumSubscription(@PathVariable Long id, @RequestBody PremiumSubscription updatedPremiumSubscription) {
-        PremiumSubscription updated = premiumSubscriptionService.updatePremiumSubscription(id, updatedPremiumSubscription);
+    @PutMapping("/update/premium-subscription/{id}")
+    public ResponseEntity<PremiumSubscription> updatePremiumSubscription(@PathVariable Long id, @RequestBody PremiumSubscription updatedSubscription) {
+        try {
+            PremiumSubscription subscription = premiumSubscriptionService.findById(id);
+            if (updatedSubscription.getEndDate() != null) {
+                subscription.setEndDate(updatedSubscription.getEndDate());
+            }
+            if (updatedSubscription.getDiscountAmount() != null) {
+                subscription.setDiscountAmount(updatedSubscription.getDiscountAmount());
+            }
+            if (updatedSubscription.getClient() != null) {
+                subscription.setClient(updatedSubscription.getClient());
+            }
 
-        if (updated != null) {
-            return ResponseEntity.ok(updated);
-        } else {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", "Subscription with ID " + id + " not found.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
+            premiumSubscriptionService.updatePremiumSubscription(subscription);
+            return ResponseEntity.ok(subscription);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
@@ -106,6 +115,20 @@ public class PremiumSubscriptionController {
         }
 
         return premiumSubscriptionsWithClientIDs;
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Object> deletePremiumSubscription(@PathVariable Long id) {
+        boolean deleted = premiumSubscriptionService.deletePremiumSubscription(id);
+
+        Map<String, String> response = new HashMap<>();
+        if (deleted) {
+            response.put("message", "Subscription with ID " + id + " has been deleted.");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("error", "Subscription with ID " + id + " not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 
 
