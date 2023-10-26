@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,7 +24,8 @@ public class Parking {
     private Integer spotsTaken;
     @Column(name = "is_Disabled", columnDefinition = "TINYINT(1)")
     private Boolean isDisabled;
-
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     public Parking() {
     }
 
