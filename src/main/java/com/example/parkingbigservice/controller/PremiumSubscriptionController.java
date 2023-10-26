@@ -2,6 +2,7 @@ package com.example.parkingbigservice.controller;
 
 import com.example.parkingbigservice.model.Client;
 import com.example.parkingbigservice.model.PremiumSubscription;
+import com.example.parkingbigservice.model.dto.PremiumSubscriptionDTO;
 import com.example.parkingbigservice.repository.ClientRepository;
 import com.example.parkingbigservice.service.ClientService;
 import com.example.parkingbigservice.service.PersonService;
@@ -11,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/subscription")
@@ -92,8 +90,22 @@ public class PremiumSubscriptionController {
     }
 
     @GetMapping("/get/all")
-    public List<PremiumSubscription> getAllPremiumSubscriptions() {
-        return premiumSubscriptionService.getAllSubscriptions();
+    public List<PremiumSubscriptionDTO> getAllPremiumSubscriptionsWithClientIDs() {
+        List<PremiumSubscription> premiumSubscriptions = premiumSubscriptionService.getAllSubscriptions();
+        List<PremiumSubscriptionDTO> premiumSubscriptionsWithClientIDs = new ArrayList<>();
+
+        for (PremiumSubscription subscription : premiumSubscriptions) {
+            PremiumSubscriptionDTO subscriptionDTO = new PremiumSubscriptionDTO(
+                    subscription.getId(),
+                    subscription.getEndDate(),
+                    subscription.getDiscountAmount(),
+                    subscription.getClient().getId() // Include the client's ID
+            );
+
+            premiumSubscriptionsWithClientIDs.add(subscriptionDTO);
+        }
+
+        return premiumSubscriptionsWithClientIDs;
     }
 
 

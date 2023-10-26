@@ -24,7 +24,6 @@ public class PremiumSubscriptionService {
         return premiumSubscriptionRepository.findAll();
     }
 
-
     public PremiumSubscription createPremiumSubscription(PremiumSubscription premiumSubscription) {
         return premiumSubscriptionRepository.save(premiumSubscription);
     }
