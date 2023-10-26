@@ -117,7 +117,7 @@ public class PremiumSubscriptionController {
         return premiumSubscriptionsWithClientIDs;
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deletePremiumSubscription(@PathVariable Long id) {
         boolean deleted = premiumSubscriptionService.deletePremiumSubscription(id);
 
