@@ -60,8 +60,6 @@ public class PremiumSubscriptionController {
         }
     }
 
-
-    //make a edit subscription method
     @PutMapping("/update/premium-subscription/{id}")
     public ResponseEntity<PremiumSubscription> updatePremiumSubscription(@PathVariable Long id, @RequestBody PremiumSubscription updatedSubscription) {
         try {
