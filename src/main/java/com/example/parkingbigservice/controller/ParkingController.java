@@ -115,6 +115,12 @@ public class ParkingController {
             if (updatedParking.getIsDisabled() != null) {
                 parking.setIsDisabled(updatedParking.getIsDisabled());
             }
+            if (updatedParking.getStartTime() != null) {
+                parking.setStartTime(updatedParking.getStartTime());
+            }
+            if (updatedParking.getEndTime() != null) {
+                parking.setEndTime(updatedParking.getEndTime());
+            }
             parkingService.updateParking(parking);
             return ResponseEntity.ok(parking);
         } catch (Exception e) {

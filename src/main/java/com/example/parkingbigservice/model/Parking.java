@@ -29,7 +29,7 @@ public class Parking {
     public Parking() {
     }
 
-    public Parking(String address, BigDecimal price, Boolean isPremium, Long partnerId, Integer maxSpotsCount, Integer spotsTaken, Boolean isDisabled) {
+    public Parking(String address, BigDecimal price, Boolean isPremium, Long partnerId, Integer maxSpotsCount, Integer spotsTaken, Boolean isDisabled, LocalDateTime startTime, LocalDateTime endTime) {
         this.address = address;
         this.price = price;
         this.isPremium = isPremium;
@@ -37,7 +37,8 @@ public class Parking {
         this.maxSpotsCount = maxSpotsCount;
         this.spotsTaken = spotsTaken;
         this.isDisabled = isDisabled;
-
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
 
