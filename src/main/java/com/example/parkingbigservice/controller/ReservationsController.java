@@ -3,6 +3,7 @@ package com.example.parkingbigservice.controller;
 import com.example.parkingbigservice.model.Client;
 import com.example.parkingbigservice.model.Parking;
 import com.example.parkingbigservice.model.Reservations;
+import com.example.parkingbigservice.model.Review;
 import com.example.parkingbigservice.service.ClientService;
 import com.example.parkingbigservice.service.ParkingService;
 import com.example.parkingbigservice.service.ReservationsService;
@@ -88,6 +89,21 @@ public class ReservationsController {
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Reservation deletion failed");
+        }
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Reservations> updateReservations(@PathVariable Long id, @RequestBody Reservations updatedReservations) {
+        try {
+            Reservations reservations = reservationsService.findById(id);
+
+            if(updatedReservations.getEndTime() != null) {
+                reservations.setEndTime(updatedReservations.getEndTime());
+            }
+
+            reservationsService.updateReservations(reservations);
+            return ResponseEntity.ok(reservations);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
         }
     }
 }

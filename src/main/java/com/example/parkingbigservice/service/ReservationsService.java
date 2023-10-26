@@ -1,5 +1,6 @@
 package com.example.parkingbigservice.service;
 
+import com.example.parkingbigservice.model.Parking;
 import com.example.parkingbigservice.model.Report;
 import com.example.parkingbigservice.model.Reservations;
 import com.example.parkingbigservice.repository.ReservationsRepository;
@@ -28,6 +29,10 @@ public class ReservationsService {
     public List<Reservations> getAllClients() {
         return reservationsRepository.findAll();
     }
+    public List<Reservations> findByParking(Parking parking){return reservationsRepository.findByParking(parking);}
+    public void updateReservations(Reservations reservations) {
+        reservationsRepository.save(reservations);
+    }
     public boolean deleteReservations(Long id) {
         if (reservationsRepository.existsById(id)) {
             reservationsRepository.deleteById(id);
@@ -36,5 +41,6 @@ public class ReservationsService {
             return false;
         }
     }
+
 
 }

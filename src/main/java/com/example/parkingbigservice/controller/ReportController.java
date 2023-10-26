@@ -3,7 +3,7 @@ package com.example.parkingbigservice.controller;
 import com.example.parkingbigservice.model.Client;
 import com.example.parkingbigservice.model.Parking;
 import com.example.parkingbigservice.model.Report;
-import com.example.parkingbigservice.repository.CompanyRepository;
+import com.example.parkingbigservice.model.Reservations;
 import com.example.parkingbigservice.service.ClientService;
 import com.example.parkingbigservice.service.ParkingService;
 import com.example.parkingbigservice.service.ReportService;
@@ -92,6 +92,21 @@ public class ReportController {
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Report deletion failed");
+        }
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Report> updateReport(@PathVariable Long id, @RequestBody Report updatedReport) {
+        try {
+            Report report = reportService.findById(id);
+
+            if(updatedReport.getDescription() != null) {
+                report.setDescription(updatedReport.getDescription());
+            }
+
+            reportService.updateReport(report);
+            return ResponseEntity.ok(report);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
         }
     }
 

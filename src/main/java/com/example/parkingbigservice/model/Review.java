@@ -16,7 +16,7 @@ public class Review {
     private Long id;
     private String title;
     private String description;
-    private double rating;
+    private Double rating;
     @Column(name = "posted_time")
     private LocalDateTime postedTime;
     @ManyToOne
@@ -31,7 +31,7 @@ public class Review {
     public Review() {
         // Default constructor
     }
-    public Review(String title, String description, double rating, Client client, Parking parking) {
+    public Review(String title, String description, Double rating, Client client, Parking parking) {
         this.title = title;
         this.description = description;
         this.rating = rating;

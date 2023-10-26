@@ -91,4 +91,25 @@ public class ReviewController {
             return ResponseEntity.badRequest().body("Review deletion failed");
         }
     }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Review> updateReview(@PathVariable Long id, @RequestBody Review updatedReview) {
+        try {
+            Review review = reviewService.findById(id);
+
+            if(updatedReview.getTitle() != null) {
+                review.setTitle(updatedReview.getTitle());
+            }
+            if(updatedReview.getDescription() != null) {
+                review.setTitle(updatedReview.getDescription());
+            }
+            if(updatedReview.getRating() != null) {
+                review.setRating(updatedReview.getRating());
+            }
+
+            reviewService.updateReview(review);
+            return ResponseEntity.ok(review);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }

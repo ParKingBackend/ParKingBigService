@@ -1,5 +1,7 @@
 package com.example.parkingbigservice.service;
 
+import com.example.parkingbigservice.model.Parking;
+import com.example.parkingbigservice.model.Report;
 import com.example.parkingbigservice.model.Reservations;
 import com.example.parkingbigservice.model.Review;
 import com.example.parkingbigservice.repository.ReviewRepository;
@@ -26,6 +28,7 @@ public class ReviewService {
     public List<Review> getAllClients() {
         return reviewRepository.findAll();
     }
+    public List<Review> findByParking(Parking parking){return reviewRepository.findByParking(parking);}
     public boolean deleteReview(Long id) {
         if (reviewRepository.existsById(id)) {
             reviewRepository.deleteById(id);
@@ -33,5 +36,8 @@ public class ReviewService {
         } else {
             return false;
         }
+    }
+    public void updateReview(Review review) {
+        reviewRepository.save(review);
     }
 }

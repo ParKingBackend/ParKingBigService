@@ -1,7 +1,13 @@
 package com.example.parkingbigservice.controller;
 
 import com.example.parkingbigservice.model.Parking;
+import com.example.parkingbigservice.model.Report;
+import com.example.parkingbigservice.model.Reservations;
+import com.example.parkingbigservice.model.Review;
 import com.example.parkingbigservice.service.ParkingService;
+import com.example.parkingbigservice.service.ReportService;
+import com.example.parkingbigservice.service.ReservationsService;
+import com.example.parkingbigservice.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +21,16 @@ public class ParkingController {
 
     private final Logger logger = Logger.getLogger(ParkingController.class.getName());
     private final ParkingService parkingService;
+    private final ReportService reportService;
+    private final ReviewService reviewService;
+    private final ReservationsService reservationsService;
 
     @Autowired
-    public ParkingController(ParkingService parkingService) {
+    public ParkingController(ParkingService parkingService, ReportService reportService, ReviewService reviewService, ReservationsService reservationsService) {
         this.parkingService = parkingService;
+        this.reportService = reportService;
+        this.reservationsService = reservationsService;
+        this.reviewService = reviewService;
     }
 
     @PostMapping("/create")
@@ -48,8 +60,24 @@ public class ParkingController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteParking(@PathVariable Long id) {
+        Parking parking = parkingService.findById(id);
+
+        if (parking == null) {
+            return ResponseEntity.badRequest().body("Parking not found");
+        }
         try {
-            //Izdzest rezervaciju un reviews un reports!
+            List<Review> reviews = reviewService.findByParking(parking);
+            for (Review review : reviews) {
+                reviewService.deleteReview(review.getId());
+            }
+            List<Reservations> reservations = reservationsService.findByParking(parking);
+            for (Reservations reservation : reservations) {
+                reservationsService.deleteReservations(reservation.getId());
+            }
+            List<Report> reports = reportService.findByParking(parking);
+            for (Report report : reports) {
+                reportService.deleteReport(report.getId());
+            }
             boolean deleted = parkingService.deleteParking(id);
 
             if (deleted) {

@@ -2,6 +2,7 @@ package com.example.parkingbigservice.service;
 
 import com.example.parkingbigservice.model.Parking;
 import com.example.parkingbigservice.model.Report;
+import com.example.parkingbigservice.model.Reservations;
 import com.example.parkingbigservice.repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class ReportService {
     public List<Report> getAllClients() {
         return reportRepository.findAll();
     }
+    public List<Report> findByParking(Parking parking){return reportRepository.findByParking(parking);}
     public boolean deleteReport(Long id) {
         if (reportRepository.existsById(id)) {
             reportRepository.deleteById(id);
@@ -36,4 +38,8 @@ public class ReportService {
             return false;
         }
     }
+    public void updateReport(Report report) {
+        reportRepository.save(report);
+    }
+
 }
