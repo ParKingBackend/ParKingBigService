@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class PremiumSubscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Primary key generated automatically
+    private Long id;
     private LocalDate endDate;
     private Double discountAmount;
     @OneToOne
@@ -23,18 +23,13 @@ public class PremiumSubscription {
     @JsonIgnore
     private Client client;
 
-    // Constructors, getters, and setters
-
     public PremiumSubscription() {
-        // Default constructor
     }
 
     public PremiumSubscription(LocalDate endDate, Double discountAmount) {
         this.endDate = endDate;
         this.discountAmount = discountAmount;
     }
-
-    // Getters and setters
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;

@@ -11,23 +11,22 @@ import lombok.Setter;
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Primary key generated automatically
+    private Long id;
     private String username;
     private String password;
     private String email;
-    private String image; // Add the 'image' field to match the SQL table
-    private int xp;
-    private int level;
+    private String image;
+    private Integer xp;
+    private Integer level;
     @Column(name = "bank_account")
     private String bankAccount; // Nullable attribute
     @Getter
     @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
     private PremiumSubscription premiumSubscription;
 
-    // Constructors, getters, and setters
 
     public Client() {
-        // Default constructor
+
     }
 
     public Client(String username, String password, String email) {
@@ -36,7 +35,6 @@ public class Client {
         this.email = email;
     }
 
-    // Getters and setters for other attributes
 
     public void setUsername(String username) {
         this.username = username;

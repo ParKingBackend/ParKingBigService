@@ -15,7 +15,6 @@ public class ClientService {
     private static final Logger log = LoggerFactory.getLogger(ClientService.class);
 
 
-
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     private final ClientRepository clientRepository;
@@ -38,6 +37,7 @@ public class ClientService {
         // Save the client in the database
         clientRepository.save(client);
     }
+
     public Client findByUsername(String username) {
         return clientRepository.findByUsername(username);
     }
@@ -88,4 +88,7 @@ public class ClientService {
         clientRepository.updateUsername(clientId, username);
     }
 
+    public void updateClient(Client client) {
+        clientRepository.save(client);
+    }
 }

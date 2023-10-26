@@ -11,7 +11,7 @@ import lombok.Setter;
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Primary key generated automatically
+    private Long id;
     private String firstName;
     private String surname;
 
@@ -19,10 +19,8 @@ public class Person {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    // Constructors, getters, and setters
 
     public Person() {
-        // Default constructor
     }
 
     public Person(String firstName, String surname) {
