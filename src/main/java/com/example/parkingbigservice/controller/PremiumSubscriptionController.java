@@ -4,12 +4,15 @@ import com.example.parkingbigservice.model.Client;
 import com.example.parkingbigservice.model.PremiumSubscription;
 import com.example.parkingbigservice.model.dto.PremiumSubscriptionDTO;
 import com.example.parkingbigservice.repository.ClientRepository;
+import com.example.parkingbigservice.repository.PremiumSubscriptionRepository;
 import com.example.parkingbigservice.service.ClientService;
 import com.example.parkingbigservice.service.PersonService;
 import com.example.parkingbigservice.service.PremiumSubscriptionService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -20,6 +23,7 @@ public class PremiumSubscriptionController {
 
 
     private final PremiumSubscriptionService premiumSubscriptionService;
+    private final PremiumSubscriptionRepository premiumSubscriptionRepository;
     private final ClientRepository clientRepository;
 
     private final PersonService personService;
@@ -27,11 +31,12 @@ public class PremiumSubscriptionController {
 
 
     @Autowired
-    public PremiumSubscriptionController(PersonService personService, ClientService clientService, ClientRepository clientRepository, PremiumSubscriptionService premiumSubscriptionService) {
+    public PremiumSubscriptionController(PersonService personService, ClientService clientService, ClientRepository clientRepository, PremiumSubscriptionService premiumSubscriptionService, PremiumSubscriptionRepository premiumSubscriptionRepository) {
         this.premiumSubscriptionService = premiumSubscriptionService;
         this.personService = personService;
         this.clientService = clientService;
         this.clientRepository = clientRepository;
+        this.premiumSubscriptionRepository = premiumSubscriptionRepository;
     }
 
     @PostMapping("/create/{clientId}")
@@ -114,20 +119,21 @@ public class PremiumSubscriptionController {
 
         return premiumSubscriptionsWithClientIDs;
     }
-
+    @Transactional
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deletePremiumSubscription(@PathVariable Long id) {
         boolean deleted = premiumSubscriptionService.deletePremiumSubscription(id);
 
         Map<String, String> response = new HashMap<>();
         if (deleted) {
-            response.put("message", "Subscription with ID " + id + " has been deleted.");
+            response.put("message", "Premium subscription with ID " + id + " has been deleted.");
             return ResponseEntity.ok(response);
         } else {
-            response.put("error", "Subscription with ID " + id + " not found.");
+            response.put("error", "Premium subscription with ID " + id + " not found.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
+
 
 
 }

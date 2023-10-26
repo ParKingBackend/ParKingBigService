@@ -32,16 +32,6 @@ public class PremiumSubscriptionService {
         return premiumSubscriptionRepository.findById(id);
     }
 
-    public boolean deletePremiumSubscription(Long id) {
-        Optional<PremiumSubscription> optionalPremiumSubscription = premiumSubscriptionRepository.findById(id);
-
-        if (optionalPremiumSubscription.isPresent()) {
-            premiumSubscriptionRepository.deleteById(id);
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     public PremiumSubscription findById(Long id) {
         return premiumSubscriptionRepository.findById(id).orElse(null);
@@ -49,5 +39,15 @@ public class PremiumSubscriptionService {
 
     public void updatePremiumSubscription(PremiumSubscription subscription) {
         premiumSubscriptionRepository.save(subscription);
+    }
+
+
+    public boolean deletePremiumSubscription(Long id) {
+        if (premiumSubscriptionRepository.existsById(id)) {
+            premiumSubscriptionRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
