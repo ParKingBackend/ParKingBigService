@@ -55,16 +55,6 @@ public class PersonController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Object> updatePerson(@PathVariable Long id, @RequestBody Person updatedPerson) {
-        Person updated = personService.updatePerson(id, updatedPerson);
-
-        if (updated != null) {
-            return ResponseEntity.ok(updated);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Object> deletePerson(@PathVariable Long id) {
         boolean deleted = personService.deletePerson(id);
@@ -81,4 +71,24 @@ public class PersonController {
         }
     }
 
+
+    @PutMapping("/update/person/{id}")
+    public ResponseEntity<Person> updatePerson(@PathVariable Long id, @RequestBody Person updatedPerson) {
+        try {
+            Person person = personService.findById(id);
+            if (updatedPerson.getFirstName() != null) {
+                person.setFirstName(updatedPerson.getFirstName());
+            }
+            if (updatedPerson.getSurname() != null) {
+                person.setSurname(updatedPerson.getSurname());
+            }
+            if (updatedPerson.getClient() != null) {
+                person.setClient(updatedPerson.getClient());
+            }
+            personService.updatePerson(person);
+            return ResponseEntity.ok(person);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }

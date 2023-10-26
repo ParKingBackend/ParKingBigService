@@ -141,4 +141,36 @@ public class ClientController {
         return ResponseEntity.ok("Username updated successfully.");
     }
 
+    @PutMapping("/update/{clientId}")
+    public ResponseEntity<Client> updateClient(@PathVariable Long clientId, @RequestBody Client updatedClient) {
+        try {
+            Client client = clientService.findById(clientId);
+            if (updatedClient.getUsername() != null) {
+                client.setUsername(updatedClient.getUsername());
+            }
+            if (updatedClient.getPassword() != null) {
+                client.setPassword(updatedClient.getPassword());
+            }
+            if (updatedClient.getEmail() != null) {
+                client.setEmail(updatedClient.getEmail());
+            }
+            if (updatedClient.getBankAccount() != null) {
+                client.setBankAccount(updatedClient.getBankAccount());
+            }
+            if (updatedClient.getImage() != null) {
+                client.setImage(updatedClient.getImage());
+            }
+            if (updatedClient.getXp() != null) {
+                client.setXp(updatedClient.getXp());
+            }
+            if (updatedClient.getLevel() != null) {
+                client.setLevel(updatedClient.getLevel());
+            }
+            clientService.updateClient(client);
+            return ResponseEntity.ok(client);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
 }

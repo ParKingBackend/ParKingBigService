@@ -59,17 +59,32 @@ public class CompanyController {
         }
     }
 
-    @PutMapping("/edit/{id}")
-    public Optional<Company> updateCompany(@PathVariable Long id, @RequestBody Company company) {
-        return companyService.updateCompany(id, company);
-    }
 
     @DeleteMapping("/delete/{id}")
     public void deleteCompany(@PathVariable Long id) {
         companyService.deleteCompany(id);
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Company> updateCompany(@PathVariable Long id, @RequestBody Company updatedCompany) {
+        try {
+            Company company = companyService.findById(id); // Assuming you have a companyService
+            if (updatedCompany.getCompName() != null) {
+                company.setCompName(updatedCompany.getCompName());
+            }
+            if (updatedCompany.getBio() != null) {
+                company.setBio(updatedCompany.getBio());
+            }
+            if (updatedCompany.getClient() != null) {
+                company.setClient(updatedCompany.getClient());
+            }
 
+            companyService.updateCompany(company); // Assuming you have an updateCompany method in your CompanyService.
+            return ResponseEntity.ok(company);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 
 
 }

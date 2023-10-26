@@ -26,19 +26,6 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
-    public Optional<Company> updateCompany(Long id, Company updatedCompany) {
-        Optional<Company> existingCompany = companyRepository.findById(id);
-        if (existingCompany.isPresent()) {
-            Company company = existingCompany.get();
-            company.setCompName(updatedCompany.getCompName());
-            company.setBio(updatedCompany.getBio());
-
-            // You can update other fields here as well
-
-            return Optional.of(companyRepository.save(company));
-        }
-        return Optional.empty();
-    }
 
     public boolean deleteCompany(Long id) {
         if (companyRepository.existsById(id)) {
@@ -46,5 +33,13 @@ public class CompanyService {
             return true;
         }
         return false;
+    }
+
+    public Company findById(Long id) {
+        return companyRepository.findById(id).orElse(null);
+    }
+
+    public void updateCompany(Company company) {
+        companyRepository.save(company);
     }
 }

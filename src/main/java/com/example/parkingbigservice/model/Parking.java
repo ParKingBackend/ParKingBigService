@@ -16,12 +16,12 @@ public class Parking {
     private Long id;
     private String address;
     private BigDecimal price;
-    @Column(name = "is_Premium", columnDefinition = "TINYINT(1)") // Specify TINYINT(1)
+    @Column(name = "is_Premium", columnDefinition = "TINYINT(1)")
     private Boolean isPremium;
     private Long partnerId;
     private Integer maxSpotsCount;
     private Integer spotsTaken;
-    @Column(name = "is_Disabled", columnDefinition = "TINYINT(1)") // Specify TINYINT(1)
+    @Column(name = "is_Disabled", columnDefinition = "TINYINT(1)")
     private Boolean isDisabled;
 
     public Parking() {

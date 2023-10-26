@@ -26,31 +26,21 @@ public class PersonService {
         return personRepository.save(person);
     }
 
-    public Person updatePerson(Long id, Person updatedPerson) {
-        // Find the existing person by ID
-        Optional<Person> existingPerson = personRepository.findById(id);
-
-        if (existingPerson.isPresent()) {
-            // Update the fields of the existing person with the values from the updatedPerson
-            Person personToUpdate = existingPerson.get();
-            personToUpdate.setFirstName(updatedPerson.getFirstName());
-            personToUpdate.setSurname(updatedPerson.getSurname());
-
-            // Save the updated person
-            return personRepository.save(personToUpdate);
-        } else {
-            // Person with the specified ID not found, return null or throw an exception
-            return null; // You can also throw an exception if you prefer
-        }
-    }
-
     public boolean deletePerson(Long id) {
         if (personRepository.existsById(id)) {
             personRepository.deleteById(id);
-            return true; // Deletion was successful
+            return true;
         } else {
-            return false; // Person with the specified ID not found
+            return false;
         }
     }
 
+    public Person findById(Long id) {
+        Optional<Person> optionalPerson = personRepository.findById(id);
+        return optionalPerson.orElse(null);
+    }
+
+    public void updatePerson(Person person) {
+        personRepository.save(person);
+    }
 }
