@@ -6,9 +6,7 @@ import com.example.parkingbigservice.model.dto.PremiumSubscriptionDTO;
 import com.example.parkingbigservice.repository.ClientRepository;
 import com.example.parkingbigservice.repository.PremiumSubscriptionRepository;
 import com.example.parkingbigservice.service.ClientService;
-import com.example.parkingbigservice.service.PersonService;
 import com.example.parkingbigservice.service.PremiumSubscriptionService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +24,13 @@ public class PremiumSubscriptionController {
     private final PremiumSubscriptionRepository premiumSubscriptionRepository;
     private final ClientRepository clientRepository;
 
-    private final PersonService personService;
+
     private final  ClientService clientService;
 
 
     @Autowired
-    public PremiumSubscriptionController(PersonService personService, ClientService clientService, ClientRepository clientRepository, PremiumSubscriptionService premiumSubscriptionService, PremiumSubscriptionRepository premiumSubscriptionRepository) {
+    public PremiumSubscriptionController( ClientService clientService, ClientRepository clientRepository, PremiumSubscriptionService premiumSubscriptionService, PremiumSubscriptionRepository premiumSubscriptionRepository) {
         this.premiumSubscriptionService = premiumSubscriptionService;
-        this.personService = personService;
         this.clientService = clientService;
         this.clientRepository = clientRepository;
         this.premiumSubscriptionRepository = premiumSubscriptionRepository;

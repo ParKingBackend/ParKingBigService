@@ -1,14 +1,10 @@
 package com.example.parkingbigservice.controller;
 
-import com.example.parkingbigservice.model.Parking;
-import com.example.parkingbigservice.model.Report;
-import com.example.parkingbigservice.model.Reservations;
-import com.example.parkingbigservice.model.Review;
-import com.example.parkingbigservice.service.ParkingService;
-import com.example.parkingbigservice.service.ReportService;
-import com.example.parkingbigservice.service.ReservationsService;
-import com.example.parkingbigservice.service.ReviewService;
+import com.example.parkingbigservice.model.*;
+import com.example.parkingbigservice.service.*;
+import com.example.parkingbigservice.service.request.ParkingRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,12 +21,16 @@ public class ParkingController {
     private final ReviewService reviewService;
     private final ReservationsService reservationsService;
 
+    private final PartnerService partnerService;
+
     @Autowired
-    public ParkingController(ParkingService parkingService, ReportService reportService, ReviewService reviewService, ReservationsService reservationsService) {
+    public ParkingController(ParkingService parkingService, PartnerService partnerService, ReportService reportService, ReviewService reviewService, ReservationsService reservationsService) {
         this.parkingService = parkingService;
         this.reportService = reportService;
         this.reservationsService = reservationsService;
         this.reviewService = reviewService;
+        this.partnerService = partnerService;
+
     }
 
     @PostMapping("/create")
@@ -100,8 +100,8 @@ public class ParkingController {
             if (updatedParking.getPrice() != null) {
                 parking.setPrice(updatedParking.getPrice());
             }
-            if (updatedParking.getPartnerId() != null) {
-                parking.setPartnerId(updatedParking.getPartnerId());
+            if (updatedParking.getPartner() != null) {
+                parking.setPartner(updatedParking.getPartner());
             }
             if (updatedParking.getMaxSpotsCount() != null) {
                 parking.setMaxSpotsCount(updatedParking.getMaxSpotsCount());
@@ -128,5 +128,25 @@ public class ParkingController {
         }
     }
 
-
+    @PostMapping("/create-with-partner")
+    public ResponseEntity<String> createParkingSpot(@RequestBody ParkingRequest parkingRequest) {
+        try {
+            Parking parking = new Parking();
+            parking.setAddress(parkingRequest.getAddress());
+            parking.setIsDisabled(parkingRequest.getIsDisabled());
+            parking.setIsPremium(parkingRequest.getIsPremium());
+            parking.setMaxSpotsCount(parkingRequest.getMaxSpotsCount());
+            parking.setPrice(parkingRequest.getPrice());
+            parking.setSpotsTaken(parkingRequest.getSpotsTaken());
+            Partner partner = partnerService.getPartnerById(parkingRequest.getPartnerId());
+            if (partner == null) {
+                return new ResponseEntity<>("Partner not found", HttpStatus.BAD_REQUEST);
+            }
+            parking.setPartner(partner);
+            Parking savedParking = parkingService.createParking(parking);
+            return new ResponseEntity<>("Parking spot created with ID: " + savedParking.getId(), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error creating parking spot: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

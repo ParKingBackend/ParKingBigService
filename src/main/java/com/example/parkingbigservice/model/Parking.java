@@ -19,21 +19,25 @@ public class Parking {
     private BigDecimal price;
     @Column(name = "is_Premium", columnDefinition = "TINYINT(1)")
     private Boolean isPremium;
-    private Long partnerId;
     private Integer maxSpotsCount;
     private Integer spotsTaken;
     @Column(name = "is_Disabled", columnDefinition = "TINYINT(1)")
     private Boolean isDisabled;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+
+    // Define many-to-one relationship with Partner
+    @ManyToOne
+    @JoinColumn(name = "partner_id")
+    private Partner partner;
+
     public Parking() {
     }
 
-    public Parking(String address, BigDecimal price, Boolean isPremium, Long partnerId, Integer maxSpotsCount, Integer spotsTaken, Boolean isDisabled, LocalDateTime startTime, LocalDateTime endTime) {
+    public Parking(String address, BigDecimal price, Boolean isPremium, Integer maxSpotsCount, Integer spotsTaken, Boolean isDisabled, LocalDateTime startTime, LocalDateTime endTime) {
         this.address = address;
         this.price = price;
         this.isPremium = isPremium;
-        this.partnerId = partnerId;
         this.maxSpotsCount = maxSpotsCount;
         this.spotsTaken = spotsTaken;
         this.isDisabled = isDisabled;
@@ -41,6 +45,11 @@ public class Parking {
         this.endTime = endTime;
     }
 
+    // Getters and setters for other fields
+
+    public void setPartner(Partner partner) {
+        this.partner = partner;
+    }
 
     public void setIsDisabled(Boolean isDisabled) {
         this.isDisabled = isDisabled;
@@ -52,7 +61,7 @@ public class Parking {
 
     @Override
     public String toString() {
-        return "Parking{" + "address='" + address + '\'' + ", price=" + price + ", isPremium=" + isPremium + ", partnerId=" + partnerId + ", maxSpotsCount=" + maxSpotsCount + ", spotsTaken=" + spotsTaken + ", isDisabled=" + isDisabled + '}';
+        return "Parking{" + "address='" + address + '\'' + ", price=" + price + ", isPremium=" + isPremium + ", maxSpotsCount=" + maxSpotsCount + ", spotsTaken=" + spotsTaken + ", isDisabled=" + isDisabled + '}';
     }
 
 
