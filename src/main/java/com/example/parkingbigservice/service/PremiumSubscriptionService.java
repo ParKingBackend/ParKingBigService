@@ -4,6 +4,7 @@ import com.example.parkingbigservice.model.PremiumSubscription;
 import com.example.parkingbigservice.repository.PremiumSubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class PremiumSubscriptionService {
         premiumSubscriptionRepository.save(subscription);
     }
 
-
+    @Transactional
     public boolean deletePremiumSubscription(Long id) {
         if (premiumSubscriptionRepository.existsById(id)) {
             premiumSubscriptionRepository.deleteById(id);
