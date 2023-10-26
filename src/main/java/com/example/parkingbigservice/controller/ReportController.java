@@ -1,9 +1,13 @@
 package com.example.parkingbigservice.controller;
 
+import com.example.parkingbigservice.model.Client;
 import com.example.parkingbigservice.model.Parking;
 import com.example.parkingbigservice.model.Report;
+import com.example.parkingbigservice.repository.CompanyRepository;
+import com.example.parkingbigservice.service.ClientService;
 import com.example.parkingbigservice.service.ParkingService;
 import com.example.parkingbigservice.service.ReportService;
+import com.example.parkingbigservice.service.request.ReportCreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,24 +24,41 @@ public class ReportController {
 
     private final ParkingService parkingService;
     private final ReportService reportService;
+    private final ClientService clientService;
     @Autowired
-    public ReportController(ReportService reportService, ParkingService parkingService) {
+    public ReportController(ReportService reportService, ParkingService parkingService, ClientService clientService) {
         this.reportService = reportService;
         this.parkingService = parkingService;
+        this.clientService = clientService;
     }
     @PostMapping("/create/{parkingId}")
-    public ResponseEntity<Object> createReport(@PathVariable Long parkingId, @RequestBody Report report) {
+    public ResponseEntity<Object> createReport(@PathVariable Long parkingId, @RequestBody ReportCreateRequest request) {
         Optional<Parking> optionalParking = Optional.ofNullable(parkingService.findById(parkingId));
-        if (optionalParking.isPresent()) {
-            Parking parking = optionalParking.get();
-            report.setParking(parking);
-            Report createdReport = reportService.createReport(report);
-            return ResponseEntity.ok(createdReport);
-        } else {
-            Map<String, String> response = new HashMap<>();
-            response.put("error", "Parking with id " + parkingId + " not found.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
+        if (optionalParking.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+
+        Long clientId = request.getClientId();
+        if (clientId == null) {
+            return ResponseEntity.badRequest().body("clientId and description are required in the request.");
+        }
+
+        Optional<Client> optionalClient = Optional.ofNullable(clientService.findById(clientId));
+
+        if (optionalClient.isEmpty()) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Client with id " + clientId + " not found.");
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+
+        Parking parking = optionalParking.get();
+        Client client = optionalClient.get();
+
+        Report report = new Report( request.getDescription(), client, parking);
+        Report createdReport = reportService.createReport(report);
+
+        return ResponseEntity.ok(createdReport);
     }
 
     @GetMapping("/get/{id}")

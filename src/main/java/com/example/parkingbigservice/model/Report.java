@@ -15,17 +15,18 @@ public class Report {
     @JoinColumn(name = "parking_id")
     private Parking parking;
     private String description;
-    @Column(name = "client_id")
-    private Long clientId;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
 
 
     public Report() {
         // Default constructor
     }
 
-    public Report(String description, Long clientId, Parking parking) {
+    public Report(String description, Client client, Parking parking) {
         this.description = description;
-        this.clientId = clientId;
+        this.client = client;
         this.parking = parking;
     }
 
@@ -34,7 +35,7 @@ public class Report {
         return "Report{" +
                 "id=" + id +
                 ", description='" + description + '\'' +
-                ", clientId=" + clientId +
+                ", clientId=" + client +
                 '}';
     }
 }
