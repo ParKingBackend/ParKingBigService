@@ -68,9 +68,6 @@ public class ClientService {
         return clientRepository.findAll();
     }
 
-    public void addBankAccount(Long clientId, String bankAccount) {
-        clientRepository.addBankAccount(clientId, bankAccount);
-    }
 
     public void addImage(Long clientId, String image) {
         clientRepository.addImage(clientId, image);

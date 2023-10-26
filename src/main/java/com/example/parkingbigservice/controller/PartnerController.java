@@ -14,14 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/partners")
 public class PartnerController {
-
     private final PartnerService partnerService;
-
-    private final PartnerRepository partnerRepository;
     @Autowired
-    public PartnerController(PartnerService partnerService, PartnerRepository partnerRepository) {
+    public PartnerController(PartnerService partnerService) {
         this.partnerService = partnerService;
-        this.partnerRepository = partnerRepository;
     }
 
     @GetMapping("/get/all")
@@ -66,7 +62,7 @@ public class PartnerController {
 
         partnerService.updatePartner(partnerToUpdate);
 
-        return ResponseEntity.ok("Partner updated");
+        return ResponseEntity.ok(partnerToUpdate);
     }
 
 

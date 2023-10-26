@@ -102,16 +102,6 @@ public class ClientController {
     public List<Client> getAllClients() {
         return clientService.getAllClients();
     }
-
-    @PutMapping("/{clientId}/update-bank-account")
-    public ResponseEntity<String> addBankAccountToClient(
-            @PathVariable Long clientId,
-            @RequestBody Map<String, String> requestBody) {
-        String bankAccount = requestBody.get("bankAccount");
-        clientService.addBankAccount(clientId, bankAccount);
-        return ResponseEntity.ok("Bank account added successfully.");
-    }
-
     @PutMapping("/{clientId}/update-image")
     public ResponseEntity<String> addImageToClient(
             @PathVariable Long clientId,
@@ -160,9 +150,6 @@ public class ClientController {
             }
             if (updatedClient.getEmail() != null) {
                 client.setEmail(updatedClient.getEmail());
-            }
-            if (updatedClient.getBankAccount() != null) {
-                client.setBankAccount(updatedClient.getBankAccount());
             }
             if (updatedClient.getImage() != null) {
                 client.setImage(updatedClient.getImage());

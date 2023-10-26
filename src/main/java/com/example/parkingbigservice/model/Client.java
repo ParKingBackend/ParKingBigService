@@ -18,8 +18,6 @@ public class Client {
     private String image;
     private Integer xp;
     private Integer level;
-    @Column(name = "bank_account")
-    private String bankAccount; // Nullable attribute
     @Getter
     @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
     private PremiumSubscription premiumSubscription;
@@ -47,9 +45,6 @@ public class Client {
         this.email = email;
     }
 
-    public void setBankAccount(String bankAccount) {
-        this.bankAccount = bankAccount;
-    }
 
 
     public void setPremiumSubscription(PremiumSubscription premiumSubscription) {
@@ -62,7 +57,6 @@ public class Client {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
-                ", bankAccount='" + bankAccount + '\'' +
                 '}';
     }
 }

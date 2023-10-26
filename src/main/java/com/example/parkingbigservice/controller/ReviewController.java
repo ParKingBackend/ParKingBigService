@@ -9,22 +9,28 @@ import com.example.parkingbigservice.service.ParkingService;
 import com.example.parkingbigservice.service.ReviewService;
 import com.example.parkingbigservice.service.request.ReviewCreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/review")
 public class ReviewController {
+    private static final Logger logger = Logger.getLogger(ReviewController.class.getName());
+
     private final ReviewService reviewService;
     private final ClientService clientService;
+
     private final ParkingService parkingService;
+    @Autowired
+    private RestTemplate restTemplate;
     @Autowired
     public ReviewController(ReviewService reviewService, ParkingService parkingService, ClientService clientService) {
         this.reviewService = reviewService;
@@ -56,7 +62,29 @@ public class ReviewController {
         Review review = new Review(request.getTitle(), request.getDescription(), request.getRating(), client, parking);
         review.setPostedTime(LocalDateTime.now());
         Review createdReview = reviewService.createReview(review);
+        sendReviewToWebhook(createdReview);
         return ResponseEntity.ok(createdReview);
+    }
+    private void sendReviewToWebhook(Review review) {
+        try {
+            String webhookURL = "https://parkingpartner.duckdns.org/api/webhook.php";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("X-API-KEY", "123api321");
+
+            HttpEntity<Review> entity = new HttpEntity<>(review, headers);
+
+            ResponseEntity<String> response = restTemplate.postForEntity(webhookURL, entity, String.class);
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                logger.info("Review data sent to webhook successfully");
+            } else {
+                logger.warning("Failed to send review data to the webhook. HTTP Status: " + response.getStatusCode());
+            }
+        } catch (Exception e) {
+            logger.severe("Exception while sending review data to the webhook: " + e.getMessage());
+        }
     }
 
     @GetMapping("/get/{id}")
