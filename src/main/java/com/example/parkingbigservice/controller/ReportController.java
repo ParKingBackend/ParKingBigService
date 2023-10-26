@@ -1,30 +1,30 @@
 package com.example.parkingbigservice.controller;
 
-import com.example.parkingbigservice.model.Client;
-import com.example.parkingbigservice.model.Parking;
-import com.example.parkingbigservice.model.Report;
-import com.example.parkingbigservice.model.Reservations;
+import com.example.parkingbigservice.model.*;
 import com.example.parkingbigservice.service.ClientService;
 import com.example.parkingbigservice.service.ParkingService;
 import com.example.parkingbigservice.service.ReportService;
 import com.example.parkingbigservice.service.request.ReportCreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/report")
 public class ReportController {
-
+    private static final Logger logger = Logger.getLogger(ReportController.class.getName());
     private final ParkingService parkingService;
     private final ReportService reportService;
     private final ClientService clientService;
+    @Autowired
+    private RestTemplate restTemplate;
     @Autowired
     public ReportController(ReportService reportService, ParkingService parkingService, ClientService clientService) {
         this.reportService = reportService;
@@ -57,8 +57,29 @@ public class ReportController {
 
         Report report = new Report(request.getDescription(), client, parking);
         Report createdReport = reportService.createReport(report);
-
+        sendReviewToWebhook(createdReport);
         return ResponseEntity.ok(createdReport);
+    }
+    private void sendReviewToWebhook(Report report) {
+        try {
+            String webhookURL = "https://parkingpartner.duckdns.org/api/webhook.php";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("X-API-KEY", "123api321");
+
+            HttpEntity<Report> entity = new HttpEntity<>(report, headers);
+
+            ResponseEntity<String> response = restTemplate.postForEntity(webhookURL, entity, String.class);
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                logger.info("Report data sent to webhook successfully");
+            } else {
+                logger.warning("Failed to send report data to the webhook. HTTP Status: " + response.getStatusCode());
+            }
+        } catch (Exception e) {
+            logger.severe("Exception while sending review data to the webhook: " + e.getMessage());
+        }
     }
 
     @GetMapping("/get/{id}")

@@ -1,29 +1,30 @@
 package com.example.parkingbigservice.controller;
 
-import com.example.parkingbigservice.model.Client;
-import com.example.parkingbigservice.model.Parking;
-import com.example.parkingbigservice.model.Reservations;
-import com.example.parkingbigservice.model.Review;
+import com.example.parkingbigservice.model.*;
 import com.example.parkingbigservice.service.ClientService;
 import com.example.parkingbigservice.service.ParkingService;
 import com.example.parkingbigservice.service.ReservationsService;
 import com.example.parkingbigservice.service.request.ReservationCreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/reservations")
 public class ReservationsController {
+    private static final Logger logger = Logger.getLogger(ReservationsController.class.getName());
     private final ClientService clientService;
     private final ParkingService parkingService;
     private final ReservationsService reservationsService;
+    @Autowired
+    private RestTemplate restTemplate;
     @Autowired
     public ReservationsController(ReservationsService reservationsService, ParkingService parkingService, ClientService clientService) {
         this.reservationsService = reservationsService;
@@ -56,8 +57,30 @@ public class ReservationsController {
 
         Reservations reservations = new Reservations(parking, client, request.getEndTime());
         Reservations createdReservations = reservationsService.createReservations(reservations);
+        sendReviewToWebhook(createdReservations);
 
         return ResponseEntity.ok(createdReservations);
+    }
+    private void sendReviewToWebhook(Reservations reservations) {
+        try {
+            String webhookURL = "https://parkingpartner.duckdns.org/api/webhook.php";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("X-API-KEY", "123api321");
+
+            HttpEntity<Reservations> entity = new HttpEntity<>(reservations, headers);
+
+            ResponseEntity<String> response = restTemplate.postForEntity(webhookURL, entity, String.class);
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                logger.info("Reservations data sent to webhook successfully");
+            } else {
+                logger.warning("Failed to send reservations data to the webhook. HTTP Status: " + response.getStatusCode());
+            }
+        } catch (Exception e) {
+            logger.severe("Exception while sending review data to the webhook: " + e.getMessage());
+        }
     }
 
     @GetMapping("/get/{id}")
